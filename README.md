@@ -13,7 +13,7 @@ keadalam file lalu ikuti arahannya.
 ## cek sekaligus
 <img src="img/Screenshot_20211112-165153_Pydroid 3.jpg"></img>
 ## contoh file berisi akun untuk cek sekaligus
-<img src="Screenshot_20211112-165114_Pydroid 3.jpg"></img>
+<img src="img/Screenshot_20211112-165114_Pydroid 3.jpg"></img>
 # install
 ```BASH
 pkg install python
