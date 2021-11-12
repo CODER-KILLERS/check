@@ -9,7 +9,7 @@ kalian bisa cek opsi checkpoint akun sekaligus! Dengan memasukannya
 keadalam file lalu ikuti arahannya.
 # dokumentasi
 ## cek satu persatu
-<img src="">
+<img src="img/Screenshot_20211112-164942_Pydroid 3.jpg">
 ## cek sekaligus
 <img src="">
 ## contoh file berisi akun untuk cek sekaligus
