@@ -9,11 +9,11 @@ kalian bisa cek opsi checkpoint akun sekaligus! Dengan memasukannya
 keadalam file lalu ikuti arahannya.
 # dokumentasi
 ## cek satu persatu
-<img src="img/Screenshot_20211112-164942_Pydroid 3.jpg">
+<img src="img/Screenshot_20211112-164942_Pydroid 3.jpg"></img>
 ## cek sekaligus
-<img src="img/Screenshot_20211112-165153_Pydroid 3.jpg">
+<img src="img/Screenshot_20211112-165153_Pydroid 3.jpg"></img>
 ## contoh file berisi akun untuk cek sekaligus
-```<img src="">```
+<img src="Screenshot_20211112-165114_Pydroid 3.jpg"></img>
 # install
 ```BASH
 pkg install python
