@@ -1,16 +1,16 @@
 # tool apa ini?
-- ## cek_opsi_facebook
+## cek_opsi_facebook
 adalah sebuah tool yang mengecek opsi checkpoint akun facebook
 yang terkena checkpoint!
-- ## tujuan dibuatnya tool ini?
+## tujuan dibuatnya tool ini?
 tool ini dibuat bertujuan untuk memudahkan para pengguna facebook
 untuk mengecek opsi checkpoint akun baik itu satu persatu, atau
 kalian bisa cek opsi checkpoint akun sekaligus! Dengan memasukannya
 keadalam file lalu ikuti arahannya.
 # dokumentasi
-- ## cek satu persatu
+## cek satu persatu
 <img src="">
-- ## cek sekaligus
+## cek sekaligus
 <img src="">
 - ## contoh file akun untuk cek sekaligus
 # install
