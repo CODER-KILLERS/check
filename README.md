@@ -15,10 +15,12 @@ keadalam file lalu ikuti arahannya.
 ## contoh file berisi akun untuk cek sekaligus
 ```<img src="">```
 # install
+```BASH
 ```pkg install python```
 ```pkg install git```
 ```git clone https://github.com/Latip176/cek_opsi_checkpoint```
 ```pip install requests bs4```
+```
 jika sudah install silahkan running atau menjalankan toolnya dengan
 cara mengetikan ```cd cek_opsi_checkpoint``` untuk masuk ke folder dan
 menjalankan ```python main.py``` pastikan semua ditulis dengan benar!
