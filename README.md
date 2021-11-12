@@ -12,7 +12,8 @@ keadalam file lalu ikuti arahannya.
 <img src="">
 ## cek sekaligus
 <img src="">
-- ## contoh file akun untuk cek sekaligus
+## contoh file berisi akun untuk cek sekaligus
+<img src="">
 # install
 ```pkg install python```
 ```pkg install git```
