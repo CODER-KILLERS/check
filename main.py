@@ -62,7 +62,7 @@ class Eksekusi(Main):
 			for cek in response2.find_all("option"):
 				if(len(cek)>0):
 					number+=1
-					opsi=re.findall('\<option selected=\".+\" value=\".+\">(.+)</option>',str(cek))
+					opsi=re.findall('\<option selected=\".+\" value=\".+\">(.+)<\/option>',str(cek))
 					print(f"\r[×] Akun checkpoint\n[=] {self.user} | {self.pw}\n[!] Terdapat {len(cek)} opsi: \n[{number}]. {''.join(opsi)}							\n\n",end="")
 				else:
 					if "c_user" in session.cookies.get_dict():
