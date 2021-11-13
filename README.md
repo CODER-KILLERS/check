@@ -24,5 +24,7 @@ pip install requests bs4
 jika sudah install silahkan running atau menjalankan toolnya dengan
 cara mengetikan ```cd cek_opsi_checkpoint``` untuk masuk ke folder dan
 menjalankan ```python main.py``` pastikan semua ditulis dengan benar!
+# login metode
+<img src="img/carbon (2).png"></img>
 # terima kasih kepada
 - XNSCODE TEAM
