@@ -14,6 +14,8 @@ keadalam file lalu ikuti arahannya.
 <img src="img/Screenshot_20211112-165153_Pydroid 3.jpg"></img>
 ## contoh file berisi akun untuk cek sekaligus
 <img src="img/Screenshot_20211112-165114_Pydroid 3.jpg"></img>
+# auto ubah password
+<img src="img/"></img>
 # install
 ```BASH
 pkg install python
