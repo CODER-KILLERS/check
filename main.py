@@ -1,6 +1,5 @@
 import requests as req,re
 from bs4 import BeautifulSoup as par
-from concurrent.futures import ThreadPoolExecutor as Bool
 
 #data - data
 data,data2={},{}
